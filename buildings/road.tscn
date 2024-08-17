@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://1griepseik5p"]
+
+[ext_resource type="Script" path="res://buildings/building.gd" id="1_gp6tt"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_b31ad"]
+size = Vector3(5, 2, 5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_n3qpv"]
+resource_local_to_scene = true
+
+[node name="Road" type="Node3D"]
+script = ExtResource("1_gp6tt")
+building_name = "Road"
+is_road = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+mesh = SubResource("BoxMesh_b31ad")
+surface_material_override/0 = SubResource("StandardMaterial3D_n3qpv")

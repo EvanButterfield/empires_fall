@@ -38,7 +38,7 @@ var half_grid_tile_size: float = 0.25
 		_on_changed()
 
 var a_star: AStar3D = null
-var used: Array
+var used: Array[Building]
 
 func get_tile_position(x: int, y: int) -> Vector3:
 	var new_position: Vector3 = Vector3(x * grid_tile_size, 0, y * grid_tile_size)
@@ -51,6 +51,12 @@ func get_nearest_grid_index(x_pos: float, z_pos: float) -> int:
 
 func get_nearest_grid_point(index: int) -> Vector3:
 	return a_star.get_point_position(index)
+
+func get_used(index: int) -> Building:
+	if index < 0 or index > (used.size() - 1):
+		return null
+	
+	return used[index]
 
 func _on_changed() -> void:
 	if a_star:
@@ -87,7 +93,7 @@ func _on_changed() -> void:
 			add_child(mesh_instance)
 			
 			a_star.add_point(index, mesh_position)
-			used.append(false)
+			used.append(null)
 			if (y_index - 1) >= 0:
 				a_star.connect_points(index, index - grid_dimension)
 			if (x_index - 1) >= 0:

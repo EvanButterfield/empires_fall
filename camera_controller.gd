@@ -4,7 +4,6 @@ class_name CameraController extends Node3D
 @export var buildings: Node3D
 @export var current_building: Node3D
 
-@export var grid: GridVisualizer
 @export var selected_grid_mesh_instance: MeshInstance3D
 
 @export var speed: float = 1.0
@@ -30,13 +29,20 @@ func _process(delta: float) -> void:
 		position.y += zoom_speed
 		position.y = min(position.y, max_zoom)
 	
-	if !grid.used[selected_grid_index] and Input.is_action_pressed("interact"):
+	var selected_used: Building = Globals.grid.used[selected_grid_index]
+	if !selected_used and Input.is_action_pressed("interact"):
 		var building_scene: PackedScene = building_manager.get_selected_building()
 		var building: Building = building_scene.instantiate()
 		building.position = selected_grid_position
 		buildings.add_child(building)
-		building.init()
-		grid.used[selected_grid_index] = true
+		building.init(selected_grid_index)
+		Globals.grid.used[selected_grid_index] = building
+		Globals.buildings_changed.emit()
+	
+	if selected_used and Input.is_action_pressed("delete"):
+		selected_used.queue_free()
+		Globals.grid.used[selected_grid_index] = null
+		Globals.buildings_changed.emit()
 
 func _physics_process(delta: float) -> void:
 	var space_state: PhysicsDirectSpaceState3D = get_world_3d().direct_space_state
@@ -49,7 +55,7 @@ func _physics_process(delta: float) -> void:
 	var result: Dictionary = space_state.intersect_ray(query)
 	if result:
 		var ground_position: Vector3 = result["position"]
-		selected_grid_index = grid.get_nearest_grid_index(ground_position.x, ground_position.z)
-		selected_grid_position = grid.get_nearest_grid_point(selected_grid_index)
+		selected_grid_index = Globals.grid.get_nearest_grid_index(ground_position.x, ground_position.z)
+		selected_grid_position = Globals.grid.get_nearest_grid_point(selected_grid_index)
 		selected_grid_mesh_instance.position = selected_grid_position
 		current_building.position = selected_grid_position
