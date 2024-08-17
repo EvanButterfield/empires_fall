@@ -1,10 +1,11 @@
 extends Node
+
 signal tick
 signal buildings_changed
 
 var grid: GridVisualizer
 
-var money: int
+var money: int = 100
 
 var tick_time: float = 0.5
 var current_tick_time: float = tick_time

@@ -11,6 +11,7 @@ resource_local_to_scene = true
 [node name="Road" type="Node3D"]
 script = ExtResource("1_gp6tt")
 building_name = "Road"
+cost = 10
 is_road = true
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]

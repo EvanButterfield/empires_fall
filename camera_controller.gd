@@ -33,13 +33,16 @@ func _process(delta: float) -> void:
 	if !selected_used and Input.is_action_pressed("interact"):
 		var building_scene: PackedScene = building_manager.get_selected_building()
 		var building: Building = building_scene.instantiate()
-		building.position = selected_grid_position
-		buildings.add_child(building)
-		building.init(selected_grid_index)
-		Globals.grid.used[selected_grid_index] = building
-		Globals.buildings_changed.emit()
+		if Globals.money >= building.cost:
+			Globals.money -= building.cost
+			building.position = selected_grid_position
+			buildings.add_child(building)
+			building.init(selected_grid_index)
+			Globals.grid.used[selected_grid_index] = building
+			Globals.buildings_changed.emit()
 	
 	if selected_used and Input.is_action_pressed("delete"):
+		Globals.money += selected_used.cost / 2
 		selected_used.queue_free()
 		Globals.grid.used[selected_grid_index] = null
 		Globals.buildings_changed.emit()

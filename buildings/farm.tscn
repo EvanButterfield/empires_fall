@@ -11,6 +11,7 @@ resource_local_to_scene = true
 [node name="Farm" type="Node3D"]
 script = ExtResource("1_gnc62")
 building_name = "Farm"
+cost = 25
 money_per_tick = 1
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
