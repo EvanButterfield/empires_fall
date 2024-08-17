@@ -35,6 +35,7 @@ func _process(delta: float) -> void:
 		var building: Building = building_scene.instantiate()
 		building.position = selected_grid_position
 		buildings.add_child(building)
+		building.init()
 		grid.used[selected_grid_index] = true
 
 func _physics_process(delta: float) -> void:

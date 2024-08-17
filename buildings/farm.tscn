@@ -8,6 +8,7 @@ size = Vector3(5, 5, 5)
 [node name="Farm" type="Node3D"]
 script = ExtResource("1_gnc62")
 building_name = "Farm"
+money_per_tick = 1
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
