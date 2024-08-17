@@ -1,4 +1,8 @@
-extends Node3D
+class_name CameraController extends Node3D
+
+@export var building_manager: BuildingManager
+@export var buildings: Node3D
+@export var current_building: Node3D
 
 @export var grid: GridVisualizer
 @export var selected_grid_mesh_instance: MeshInstance3D
@@ -12,6 +16,7 @@ extends Node3D
 @onready var camera: Camera3D = $Camera3D
 
 var selected_grid_index: int
+var selected_grid_position: Vector3
 
 func _process(delta: float) -> void:
 	var input: Vector2 = Input.get_vector("move_left", "move_right", "move_forward", "move_back")
@@ -24,6 +29,13 @@ func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("zoom_out"):
 		position.y += zoom_speed
 		position.y = min(position.y, max_zoom)
+	
+	if !grid.used[selected_grid_index] and Input.is_action_pressed("interact"):
+		var building: Building = building_manager.get_selected_building()
+		var building_node: Node3D = building.scene.instantiate()
+		building_node.position = selected_grid_position
+		buildings.add_child(building_node)
+		grid.used[selected_grid_index] = true
 
 func _physics_process(delta: float) -> void:
 	var space_state: PhysicsDirectSpaceState3D = get_world_3d().direct_space_state
@@ -37,5 +49,6 @@ func _physics_process(delta: float) -> void:
 	if result:
 		var ground_position: Vector3 = result["position"]
 		selected_grid_index = grid.get_nearest_grid_index(ground_position.x, ground_position.z)
-		var tile_position: Vector3 = grid.get_nearest_grid_point(selected_grid_index)
-		selected_grid_mesh_instance.position = tile_position
+		selected_grid_position = grid.get_nearest_grid_point(selected_grid_index)
+		selected_grid_mesh_instance.position = selected_grid_position
+		current_building.position = selected_grid_position

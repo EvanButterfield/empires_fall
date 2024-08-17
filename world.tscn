@@ -1,7 +1,15 @@
-[gd_scene load_steps=8 format=3 uid="uid://kj45ecayg2ke"]
+[gd_scene load_steps=12 format=3 uid="uid://kj45ecayg2ke"]
 
 [ext_resource type="Script" path="res://grid_visualizer.gd" id="1_27pgn"]
 [ext_resource type="Script" path="res://camera_controller.gd" id="2_rplq2"]
+[ext_resource type="Script" path="res://buildings/building_manager.gd" id="3_b7f4y"]
+[ext_resource type="PackedScene" uid="uid://djk86fdufw5x5" path="res://buildings/farm.tscn" id="4_2k367"]
+[ext_resource type="Script" path="res://buildings/building.gd" id="5_7qpih"]
+
+[sub_resource type="Resource" id="Resource_gfwlg"]
+script = ExtResource("5_7qpih")
+scene = ExtResource("4_2k367")
+name = "Farm"
 
 [sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_lr8q4"]
 
@@ -15,6 +23,11 @@ size = Vector2(5, 5)
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dpv3y"]
 
 [node name="World" type="Node3D"]
+
+[node name="BuildingManager" type="Node3D" parent="." node_paths=PackedStringArray("current_building")]
+script = ExtResource("3_b7f4y")
+buildings = Array[ExtResource("5_7qpih")]([SubResource("Resource_gfwlg")])
+current_building = NodePath("../CurrentBuilding")
 
 [node name="Grid" type="StaticBody3D" parent="."]
 collision_layer = 2
@@ -30,20 +43,28 @@ grid_dimension = 32
 grid_tile_size = 5.0
 mesh = SubResource("SphereMesh_dtxos")
 material = SubResource("StandardMaterial3D_h6pug")
+update = null
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.904314, -2.69506e-08, -0.426869, 0.265761, 0.782554, 0.56301, 0.334048, -0.622583, 0.707674, 0, 0, 0)
+[node name="CurrentBuilding" type="Node3D" parent="."]
 
-[node name="Head" type="Node3D" parent="." node_paths=PackedStringArray("grid", "selected_grid_mesh_instance")]
+[node name="SelectedGrid" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 2.5, 0, 2.5)
+mesh = SubResource("QuadMesh_5hdyd")
+surface_material_override/0 = SubResource("StandardMaterial3D_dpv3y")
+
+[node name="Buildings" type="Node3D" parent="."]
+
+[node name="Head" type="Node3D" parent="." node_paths=PackedStringArray("building_manager", "buildings", "current_building", "grid", "selected_grid_mesh_instance")]
 transform = Transform3D(0.906308, 0, 0.422618, 0, 1, 0, -0.422618, 0, 0.906308, 0, 8, 0)
 script = ExtResource("2_rplq2")
+building_manager = NodePath("../BuildingManager")
+buildings = NodePath("../Buildings")
+current_building = NodePath("../CurrentBuilding")
 grid = NodePath("../Grid/GridVisualizer")
 selected_grid_mesh_instance = NodePath("../SelectedGrid")
 
 [node name="Camera3D" type="Camera3D" parent="Head"]
 transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 0, 0)
 
-[node name="SelectedGrid" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 2.5, 0, 2.5)
-mesh = SubResource("QuadMesh_5hdyd")
-surface_material_override/0 = SubResource("StandardMaterial3D_dpv3y")
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.904314, 2.56031e-07, -0.426869, 0.265761, 0.782554, 0.56301, 0.334048, -0.622583, 0.707674, 0, 0, 0)

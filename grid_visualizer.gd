@@ -25,21 +25,20 @@ var half_grid_tile_size: float = 0.25
 
 @export var mesh: Mesh:
 	set(new_mesh):
-		if mesh:
-			mesh.free()
-		
 		mesh = new_mesh
 		_on_changed()
   
 @export var material: StandardMaterial3D:
 	set(new_material):
-		if material:
-			material.free()
-		
 		material = new_material
 		_on_changed()
 
+@export var update: bool:
+	set(value):
+		_on_changed()
+
 var a_star: AStar3D = null
+var used: Array
 
 func get_tile_position(x: int, y: int) -> Vector3:
 	var new_position: Vector3 = Vector3(x * grid_tile_size, 0, y * grid_tile_size)
@@ -58,6 +57,11 @@ func _on_changed() -> void:
 		a_star.clear()
 	else:
 		a_star = AStar3D.new()
+	
+	if used:
+		used.clear()
+	else:
+		used = []
 	
 	if selected_grid_mesh_instance:
 		selected_grid_mesh_instance.mesh.size.x = grid_tile_size
@@ -83,6 +87,7 @@ func _on_changed() -> void:
 			add_child(mesh_instance)
 			
 			a_star.add_point(index, mesh_position)
+			used.append(false)
 			if (y_index - 1) >= 0:
 				a_star.connect_points(index, index - grid_dimension)
 			if (x_index - 1) >= 0:
