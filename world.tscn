@@ -1,22 +1,49 @@
-[gd_scene load_steps=4 format=3 uid="uid://kj45ecayg2ke"]
+[gd_scene load_steps=8 format=3 uid="uid://kj45ecayg2ke"]
 
-[ext_resource type="Script" path="res://grid.gd" id="1_i30up"]
+[ext_resource type="Script" path="res://grid_visualizer.gd" id="1_27pgn"]
+[ext_resource type="Script" path="res://camera_controller.gd" id="2_rplq2"]
 
-[sub_resource type="SphereMesh" id="SphereMesh_ghq0k"]
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_lr8q4"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_huqis"]
+[sub_resource type="SphereMesh" id="SphereMesh_dtxos"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_h6pug"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_5hdyd"]
+size = Vector2(5, 5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dpv3y"]
 
 [node name="World" type="Node3D"]
 
-[node name="Grid" type="Node3D" parent="."]
-script = ExtResource("1_i30up")
-grid_dimension = 64
-grid_tile_size = 5.0
-mesh = SubResource("SphereMesh_ghq0k")
-material = SubResource("StandardMaterial3D_huqis")
+[node name="Grid" type="StaticBody3D" parent="."]
+collision_layer = 2
+collision_mask = 0
 
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 7.81818, 0)
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Grid"]
+shape = SubResource("WorldBoundaryShape3D_lr8q4")
+
+[node name="GridVisualizer" type="Node3D" parent="Grid" node_paths=PackedStringArray("selected_grid_mesh_instance")]
+script = ExtResource("1_27pgn")
+selected_grid_mesh_instance = NodePath("../../SelectedGrid")
+grid_dimension = 32
+grid_tile_size = 5.0
+mesh = SubResource("SphereMesh_dtxos")
+material = SubResource("StandardMaterial3D_h6pug")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.904314, -2.69506e-08, -0.426869, 0.265761, 0.782554, 0.56301, 0.334048, -0.622583, 0.707674, 0, 0, 0)
+
+[node name="Head" type="Node3D" parent="." node_paths=PackedStringArray("grid", "selected_grid_mesh_instance")]
+transform = Transform3D(0.906308, 0, 0.422618, 0, 1, 0, -0.422618, 0, 0.906308, 0, 8, 0)
+script = ExtResource("2_rplq2")
+grid = NodePath("../Grid/GridVisualizer")
+selected_grid_mesh_instance = NodePath("../SelectedGrid")
+
+[node name="Camera3D" type="Camera3D" parent="Head"]
+transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 0, 0)
+
+[node name="SelectedGrid" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 2.5, 0, 2.5)
+mesh = SubResource("QuadMesh_5hdyd")
+surface_material_override/0 = SubResource("StandardMaterial3D_dpv3y")
