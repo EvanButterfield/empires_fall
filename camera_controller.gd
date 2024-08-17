@@ -31,10 +31,10 @@ func _process(delta: float) -> void:
 		position.y = min(position.y, max_zoom)
 	
 	if !grid.used[selected_grid_index] and Input.is_action_pressed("interact"):
-		var building: Building = building_manager.get_selected_building()
-		var building_node: Node3D = building.scene.instantiate()
-		building_node.position = selected_grid_position
-		buildings.add_child(building_node)
+		var building_scene: PackedScene = building_manager.get_selected_building()
+		var building: Building = building_scene.instantiate()
+		building.position = selected_grid_position
+		buildings.add_child(building)
 		grid.used[selected_grid_index] = true
 
 func _physics_process(delta: float) -> void:

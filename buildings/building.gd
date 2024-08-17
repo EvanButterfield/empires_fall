@@ -1,4 +1,3 @@
-class_name Building extends Resource
+class_name Building extends Node3D
 
-@export var scene: PackedScene
-@export var name: String
+@export var building_name: String
