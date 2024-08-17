@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3 uid="uid://kj45ecayg2ke"]
+
+[ext_resource type="Script" path="res://grid.gd" id="1_i30up"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_ghq0k"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_huqis"]
+
+[node name="World" type="Node3D"]
+
+[node name="Grid" type="Node3D" parent="."]
+script = ExtResource("1_i30up")
+grid_dimension = 64
+grid_tile_size = 5.0
+mesh = SubResource("SphereMesh_ghq0k")
+material = SubResource("StandardMaterial3D_huqis")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 7.81818, 0)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.904314, -2.69506e-08, -0.426869, 0.265761, 0.782554, 0.56301, 0.334048, -0.622583, 0.707674, 0, 0, 0)
