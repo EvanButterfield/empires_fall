@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://1griepseik5p"]
 
-[ext_resource type="Script" path="res://buildings/building.gd" id="1_gp6tt"]
+[ext_resource type="Script" path="res://buildings/building.gd" id="1_4ihx2"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_b31ad"]
 size = Vector3(5, 2, 5)
@@ -9,7 +9,7 @@ size = Vector3(5, 2, 5)
 resource_local_to_scene = true
 
 [node name="Road" type="Node3D"]
-script = ExtResource("1_gp6tt")
+script = ExtResource("1_4ihx2")
 building_name = "Road"
 cost = 10
 is_road = true

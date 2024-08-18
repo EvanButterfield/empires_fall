@@ -4,6 +4,7 @@ signal tick
 signal buildings_changed
 
 var grid: GridVisualizer
+var roads: Array = []
 
 var money: int = 100
 
@@ -19,4 +20,11 @@ func _process(delta: float) -> void:
 		tick.emit()
 		current_tick_time = tick_time
 		print(money)
-		
+
+func get_road_from_index(building_index: int) -> int:
+	for road in roads:
+		for index in road:
+			if index == building_index:
+				return index
+	
+	return -1

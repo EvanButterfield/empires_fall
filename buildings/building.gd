@@ -6,14 +6,12 @@ class_name Building extends Node3D
 @export var is_road: bool
 
 var grid_index: int
-var road_connections: Array[int] = []
+var road_connections: Array[int]
 
 func init(new_grid_index: int) -> void:
 	grid_index = new_grid_index
 	Globals.tick.connect(_on_tick)
-	
-	if !is_road:
-		Globals.buildings_changed.connect(_on_buildings_changed)
+	Globals.buildings_changed.connect(_on_buildings_changed)
 
 func _on_tick() -> void:
 	if money_per_tick == 0:
@@ -23,8 +21,20 @@ func _on_tick() -> void:
 		Globals.money += money_per_tick
 
 func _on_buildings_changed() -> void:
-	road_connections.clear()
+	if is_road:
+		return
 	
+	road_connections.clear()
+	road_connections.append_array(get_road_connections())
+	
+	if road_connections.size() > 0:
+		$MeshInstance3D.get_surface_override_material(0).albedo_color = Color.GREEN
+	else:
+		$MeshInstance3D.get_surface_override_material(0).albedo_color = Color.RED
+
+# TODO(evan): Make this return only valid buildings
+func get_road_connections() -> Array:
+	var roads: Array[int]
 	var up_building: Building = Globals.grid.get_used(grid_index - Globals.grid.grid_dimension)
 	var down_building: Building = Globals.grid.get_used(grid_index + Globals.grid.grid_dimension)
 	
@@ -40,15 +50,12 @@ func _on_buildings_changed() -> void:
 		right_building = Globals.grid.get_used(grid_index + 1)
 	
 	if up_building and up_building.is_road:
-		road_connections.append(grid_index - Globals.grid.grid_dimension)
+		roads.append(up_building.grid_index)
 	if down_building and down_building.is_road:
-		road_connections.append(grid_index + Globals.grid.grid_dimension)
+		roads.append(down_building.grid_index)
 	if left_building and left_building.is_road:
-		road_connections.append(grid_index - 1)
+		roads.append(left_building.grid_index)
 	if right_building and right_building.is_road:
-		road_connections.append(grid_index + 1)
+		roads.append(right_building.grid_index)
 	
-	if road_connections.size() > 0:
-		$MeshInstance3D.get_surface_override_material(0).albedo_color = Color.GREEN
-	else:
-		$MeshInstance3D.get_surface_override_material(0).albedo_color = Color.RED
+	return roads
