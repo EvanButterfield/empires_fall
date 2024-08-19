@@ -1,6 +1,7 @@
-[gd_scene load_steps=11 format=3 uid="uid://kj45ecayg2ke"]
+[gd_scene load_steps=12 format=3 uid="uid://kj45ecayg2ke"]
 
 [ext_resource type="Script" path="res://grid_visualizer.gd" id="1_27pgn"]
+[ext_resource type="Script" path="res://world.gd" id="1_p7e8h"]
 [ext_resource type="Script" path="res://camera_controller.gd" id="2_rplq2"]
 [ext_resource type="PackedScene" uid="uid://djk86fdufw5x5" path="res://buildings/farm.tscn" id="2_rrtrj"]
 [ext_resource type="Script" path="res://buildings/building_manager.gd" id="3_b7f4y"]
@@ -18,6 +19,7 @@ size = Vector2(5, 5)
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dpv3y"]
 
 [node name="World" type="Node3D"]
+script = ExtResource("1_p7e8h")
 
 [node name="Grid" type="StaticBody3D" parent="."]
 collision_layer = 2
@@ -61,3 +63,97 @@ transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.904314, 2.56031e-07, -0.426869, 0.265761, 0.782554, 0.56301, 0.334048, -0.622583, 0.707674, 0, 0, 0)
+
+[node name="HUD" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CurrentBuildingLabel" type="Label" parent="HUD"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -960.0
+offset_right = 960.0
+offset_bottom = 23.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 81
+text = "Farm"
+horizontal_alignment = 1
+
+[node name="CurrentMoneyLabel" type="Label" parent="HUD"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -189.0
+offset_top = -111.0
+offset_right = 189.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 81
+text = "10 Money"
+
+[node name="PauseMenu" type="Control" parent="."]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="PauseMenu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="PauseMenu"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -369.0
+offset_top = 55.0
+offset_right = 369.0
+offset_bottom = 316.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 191
+text = "PAUSED"
+
+[node name="Buttons" type="GridContainer" parent="PauseMenu"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -124.5
+offset_top = -1.84003
+offset_right = 124.5
+offset_bottom = 292.16
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PlayButton" type="Button" parent="PauseMenu/Buttons"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 100
+text = "PLAY"
+
+[node name="QuitButton" type="Button" parent="PauseMenu/Buttons"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 100
+text = "QUIT"
+
+[connection signal="pressed" from="PauseMenu/Buttons/PlayButton" to="." method="_on_play_button_pressed"]
+[connection signal="pressed" from="PauseMenu/Buttons/QuitButton" to="." method="_on_quit_button_pressed"]

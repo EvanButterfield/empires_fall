@@ -32,7 +32,6 @@ func _on_buildings_changed() -> void:
 	else:
 		$MeshInstance3D.get_surface_override_material(0).albedo_color = Color.RED
 
-# TODO(evan): Make this return only valid buildings
 func get_road_connections() -> Array:
 	var roads: Array[int]
 	var up_building: Building = Globals.grid.get_used(grid_index - Globals.grid.grid_dimension)
