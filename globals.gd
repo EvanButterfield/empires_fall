@@ -9,11 +9,11 @@ var scenes: Array[PackedScene] = [preload("res://menus/main_menu.tscn"),
 								preload("res://menus/end_menu.tscn")]
 
 var grid: GridVisualizer
-var roads: Array = []
 
-var money: int = 100
+var start_money: int = 45
+var money: int = start_money
 var total_money: int = money
-var max_total_money: int = 500
+var max_total_money: int = 15000
 var total_buildings_money: int = 0:
 	set(value):
 		total_buildings_money = value
@@ -38,6 +38,8 @@ func _process(delta: float) -> void:
 	if last_amount_of_root_scenes != amount_of_root_scenes:
 		if current_scene_enum == SCENES.WORLD:
 			grid = current_scene.get_child(0).get_child(0)
+			money = start_money
+			total_buildings_money = 0
 		else:
 			grid = null
 	
@@ -56,11 +58,3 @@ func switch_scene(scene: SCENES) -> void:
 	current_scene = scenes[scene].instantiate()
 	get_tree().change_scene_to_packed(scenes[scene])
 	current_scene_enum = scene
-
-func get_road_from_index(building_index: int) -> int:
-	for road in roads:
-		for index in road:
-			if index == building_index:
-				return index
-	
-	return -1

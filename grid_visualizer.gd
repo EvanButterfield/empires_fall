@@ -40,6 +40,10 @@ var half_grid_tile_size: float = 0.25
 var a_star: AStar3D = null
 var used: Array[Building]
 
+func _ready() -> void:
+	for child in get_children():
+		child.queue_free()
+
 func get_tile_position(x: int, y: int) -> Vector3:
 	var new_position: Vector3 = Vector3(x * grid_tile_size, 0, y * grid_tile_size)
 	return new_position

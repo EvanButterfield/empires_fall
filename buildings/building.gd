@@ -26,11 +26,6 @@ func _on_buildings_changed() -> void:
 	
 	road_connections.clear()
 	road_connections.append_array(get_road_connections())
-	
-	if road_connections.size() > 0:
-		$MeshInstance3D.get_surface_override_material(0).albedo_color = Color.GREEN
-	else:
-		$MeshInstance3D.get_surface_override_material(0).albedo_color = Color.RED
 
 func get_road_connections() -> Array:
 	var roads: Array[int]

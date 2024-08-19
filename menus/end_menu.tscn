@@ -36,7 +36,7 @@ offset_right = 643.0
 offset_bottom = 656.79
 grow_horizontal = 2
 theme_override_font_sizes/font_size = 50
-text = "The empire could not handle the ever expansion of your greed. Maybe build it a little bit more to scale next time? (or maybe be content with a little bit)"
+text = "The empire could not handle the ever expansion of your greed. Maybe build it a little bit more to scale next time? (or maybe be content with a little less?)"
 horizontal_alignment = 1
 autowrap_mode = 2
 
@@ -63,3 +63,6 @@ text = "PLAY AGAIN"
 layout_mode = 2
 theme_override_font_sizes/font_size = 100
 text = "QUIT"
+
+[connection signal="pressed" from="Buttons/PlayButton" to="." method="_on_play_button_pressed"]
+[connection signal="pressed" from="Buttons/QuitButton" to="." method="_on_quit_button_pressed"]

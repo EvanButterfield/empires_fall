@@ -1,11 +1,14 @@
-[gd_scene load_steps=12 format=3 uid="uid://kj45ecayg2ke"]
+[gd_scene load_steps=15 format=3 uid="uid://kj45ecayg2ke"]
 
 [ext_resource type="Script" path="res://grid_visualizer.gd" id="1_27pgn"]
 [ext_resource type="Script" path="res://world.gd" id="1_p7e8h"]
 [ext_resource type="Script" path="res://camera_controller.gd" id="2_rplq2"]
-[ext_resource type="PackedScene" uid="uid://djk86fdufw5x5" path="res://buildings/farm.tscn" id="2_rrtrj"]
 [ext_resource type="Script" path="res://buildings/building_manager.gd" id="3_b7f4y"]
 [ext_resource type="PackedScene" uid="uid://1griepseik5p" path="res://buildings/road.tscn" id="3_brhlc"]
+[ext_resource type="PackedScene" uid="uid://kkvn6v3uc5mv" path="res://buildings/shop.tscn" id="6_ybwv5"]
+[ext_resource type="PackedScene" uid="uid://b6j1ajxax3i24" path="res://buildings/cafe.tscn" id="7_l2ovi"]
+[ext_resource type="PackedScene" uid="uid://ghl8u2kqfmbm" path="res://buildings/house_1.tscn" id="7_ua13t"]
+[ext_resource type="PackedScene" uid="uid://by6ak4qqen13h" path="res://buildings/skyscraper.tscn" id="8_8dtmy"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_dtxos"]
 
@@ -13,10 +16,10 @@
 
 [sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_lr8q4"]
 
-[sub_resource type="QuadMesh" id="QuadMesh_5hdyd"]
-size = Vector2(5, 5)
+[sub_resource type="QuadMesh" id="QuadMesh_f2tbu"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dpv3y"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wblvu"]
+albedo_color = Color(0, 0.65098, 0, 1)
 
 [node name="World" type="Node3D"]
 script = ExtResource("1_p7e8h")
@@ -27,7 +30,7 @@ collision_mask = 0
 
 [node name="GridVisualizer" type="Node3D" parent="Grid" node_paths=PackedStringArray("selected_grid_mesh_instance")]
 script = ExtResource("1_27pgn")
-selected_grid_mesh_instance = NodePath("../../SelectedGrid")
+selected_grid_mesh_instance = NodePath("")
 grid_dimension = 32
 grid_tile_size = 5.0
 mesh = SubResource("SphereMesh_dtxos")
@@ -38,25 +41,20 @@ shape = SubResource("WorldBoundaryShape3D_lr8q4")
 
 [node name="BuildingManager" type="Node3D" parent="." node_paths=PackedStringArray("current_building")]
 script = ExtResource("3_b7f4y")
-buildings = Array[PackedScene]([ExtResource("2_rrtrj"), ExtResource("3_brhlc")])
+buildings = Array[PackedScene]([ExtResource("3_brhlc"), ExtResource("7_ua13t"), ExtResource("6_ybwv5"), ExtResource("7_l2ovi"), ExtResource("8_8dtmy")])
 current_building = NodePath("../CurrentBuilding")
 
 [node name="CurrentBuilding" type="Node3D" parent="."]
 
-[node name="SelectedGrid" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 2.5, 0, 2.5)
-mesh = SubResource("QuadMesh_5hdyd")
-surface_material_override/0 = SubResource("StandardMaterial3D_dpv3y")
-
 [node name="Buildings" type="Node3D" parent="."]
 
-[node name="Head" type="Node3D" parent="." node_paths=PackedStringArray("building_manager", "buildings", "current_building", "selected_grid_mesh_instance")]
+[node name="Head" type="Node3D" parent="." node_paths=PackedStringArray("building_manager", "buildings", "current_building")]
 transform = Transform3D(0.906308, 0, 0.422618, 0, 1, 0, -0.422618, 0, 0.906308, 0, 8, 0)
 script = ExtResource("2_rplq2")
 building_manager = NodePath("../BuildingManager")
 buildings = NodePath("../Buildings")
 current_building = NodePath("../CurrentBuilding")
-selected_grid_mesh_instance = NodePath("../SelectedGrid")
+max_zoom = 35.0
 
 [node name="Camera3D" type="Camera3D" parent="Head"]
 transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 0, 0)
@@ -154,6 +152,11 @@ text = "PLAY"
 layout_mode = 2
 theme_override_font_sizes/font_size = 100
 text = "QUIT"
+
+[node name="Ground" type="MeshInstance3D" parent="."]
+transform = Transform3D(700, 0, 0, 0, -3.0598e-05, 700, 0, -700, -3.0598e-05, 0, 0, 0)
+mesh = SubResource("QuadMesh_f2tbu")
+surface_material_override/0 = SubResource("StandardMaterial3D_wblvu")
 
 [connection signal="pressed" from="PauseMenu/Buttons/PlayButton" to="." method="_on_play_button_pressed"]
 [connection signal="pressed" from="PauseMenu/Buttons/QuitButton" to="." method="_on_quit_button_pressed"]
