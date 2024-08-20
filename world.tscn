@@ -28,9 +28,8 @@ script = ExtResource("1_p7e8h")
 collision_layer = 2
 collision_mask = 0
 
-[node name="GridVisualizer" type="Node3D" parent="Grid" node_paths=PackedStringArray("selected_grid_mesh_instance")]
+[node name="GridVisualizer" type="Node3D" parent="Grid"]
 script = ExtResource("1_27pgn")
-selected_grid_mesh_instance = NodePath("")
 grid_dimension = 32
 grid_tile_size = 5.0
 mesh = SubResource("SphereMesh_dtxos")

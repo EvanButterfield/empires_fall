@@ -12,6 +12,8 @@ class_name CameraController extends Node3D
 
 @onready var camera: Camera3D = $Camera3D
 
+var building_particle = preload("res://building_particle.tscn")
+
 var selected_grid_index: int
 var selected_grid_position: Vector3
 
@@ -49,6 +51,10 @@ func _process(delta: float) -> void:
 				Globals.grid.used[selected_grid_index] = building
 				Globals.buildings_changed.emit()
 				Globals.total_buildings_money += building.cost
+				
+				var particle: GPUParticles3D = building_particle.instantiate()
+				particle.position = selected_grid_position
+				get_tree().current_scene.add_child(particle)
 	
 	if selected_used:
 		current_building.visible = false
